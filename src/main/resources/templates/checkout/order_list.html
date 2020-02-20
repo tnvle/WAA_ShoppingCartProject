@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layouts/general/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>List of Orders</h2>
+<!--        <h5 th:text="${'Total Points: ' + points}"></h5>-->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>User</th>
+                <th>Phone</th>
+                <th>Payment</th>
+                <th>SubTotal</th>
+                <th>Comment</th>
+                <th>Points</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order: ${orders}">
+                <td th:text="${order.id}">ID</td>
+                <td th:text="${order.orderDate}">Date</td>
+                <td th:text="${order.user.firstName} + ' ' + ${order.user.lastName}">User</td>
+                <td th:text="${order.phone}">Phone</td>
+                <td th:text="${order.payment.payment}">Payment</td>
+                <td th:text="${order.subTotal}">SubTotal</td>
+                <td th:text="${order.comment}">Comment</td>
+                <td th:text="${order.point}" th:id="${'point_' + order.id}">Points</td>
+                <td th:text="${order.status.status}" th:id="${'status_' + order.id}">Status</td>
+                <td style="text-align: center;vertical-align: middle;">
+<!--                    <button th:if="${review.review.show == true}" class="btn btn-success" disabled>Cancel</button>-->
+<!--                    <button th:if="${review.review.show == false}" class="btn btn-warning" th:id="${review.review.id}"-->
+<!--                            onclick="document.getElementById('orderId').value = this.id" data-toggle="modal"-->
+<!--                            data-target="#reviewModelConfirmation">Not Approved-->
+<!--                    </button>-->
+
+                    <button th:if="${order.status.id < idShipped}" class="btn btn-outline-danger" th:id="${order.id}"
+                            onclick="document.getElementById('orderId').value = this.id" data-toggle="modal"
+                            data-target="#orderModelConfirmation">Cancel
+                    </button>
+
+                </td>
+                <td style="text-align: center;vertical-align: middle;">
+                    <a th:href="@{/buyer/order-details/{id}(id=${order.id})}" class="btn btn-outline-primary"><span><strong>View</strong></span> </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="orderId" value=""/>
+        <input type="hidden" id="csrf" th:value="${#response.getHeader('X-CSRF-TOKEN')}"/>
+
+        <div class="modal fade" id="orderModelConfirmation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cancel Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        Do you want to cancel this order?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnCancelOrder">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

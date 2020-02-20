@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/general/layout}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register User</title>
+</head>
+<body>
+
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>Register</h2>
+        <form action="#" th:action="@{/addUser}" method="post" th:object="${user}">
+            <div class="form-group">
+                <label for="firstName">First Name: </label>
+                <input name="firstName" id="firstName" th:field="*{firstName}"/>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" th:errorclass="fieldError">
+                    Incorrect First Name</p>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name: </label>
+                <input type="lastName" name="lastName" id="lastName" th:field="*{lastName}"/>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" th:errorclass="fieldError">Incorrect
+                    Last Name</p>
+            </div>
+            <div class="form-group">
+                <label for="username">Username: </label>
+                <input name="username" id="username" th:field="*{username}"/>
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="fieldError">Incorrect
+                    Username</p>
+                </p>
+            </div>
+            <div class="form-group">
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password" th:field="*{password}"/>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="fieldError">Incorrect
+                    Password</p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" th:field="*{email}"/>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="fieldError">Incorrect
+                    Email</p>
+            </div>
+
+            <div class="form-group">
+                <label for="roles">Roles: </label>
+            </div>
+            <div class="form-group">
+                <select id="roles" th:field="*{roles}" multiple="multiple" class="selectpicker">
+                    <option value="">Select a role</option>
+                    <option th:each="role: ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
+                </select>
+            </div>
+
+            <div class="form-group" style="clear: both;">
+                <h3>Address information</h3>
+            </div>
+            <div class="form-group">
+                <label for="street">Street: </label>
+                <input name="street" id="street" th:field="*{address.street}"/>
+                <p th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}"
+                   th:errorclass="fieldError">
+                    Incorrect Street</p>
+            </div>
+            <div class="form-group">
+                <label for="city">City: </label>
+                <input name="city" id="city" th:field="*{address.city}"/>
+                <p th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}" th:errorclass="fieldError">
+                    Incorrect
+                    City</p>
+            </div>
+            <div class="form-group">
+                <label for="state">State: </label>
+                <input name="state" id="state" th:field="*{address.state}"/>
+                <p th:if="${#fields.hasErrors('address.state')}" th:errors="*{address.state}"
+                   th:errorclass="fieldError">
+                    Incorrect State</p>
+            </div>
+            <div class="form-group">
+                <label for="zip">Zip Code: </label>
+                <input name="zip" id="zip" th:field="*{address.zip}"/>
+                <p th:if="${#fields.hasErrors('address.zip')}" th:errors="*{address.zip}" th:errorclass="fieldError">
+                    Incorrect Zip Code</p>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-success" type="submit" id="addUser" value="Register"/>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

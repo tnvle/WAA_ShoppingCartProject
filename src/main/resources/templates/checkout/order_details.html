@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layouts/general/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details page</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+
+        <h2>Order Details</h2>
+        <p>Order ID: <span th:text="${order.id}"></p>
+        <p>Customer: <span th:text="${order.firstName + ' ' + order.lastName}"></p>
+        <p>Date: <span th:text="${order.orderDate}"></p>
+        <p>Shipping Address : <span th:text="${order.address.street + ', ' + order.address.city + ', ' + order.address.state + ', ' + order.address.zip}"></p>
+        <p>Phone : <span th:text="${order.phone}"></p>
+        <p>Status : <span th:text="${order.status.status}"></p>
+        <p>Points : <span th:text="${order.point}"></p>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderLine: ${order.orderLines}">
+                <td th:text="${orderLine.product.id}">ID</td>
+                <td th:text="${orderLine.product.name}">Name</td>
+                <td th:text="${'$'+ orderLine.product.price}">Price</td>
+                <td th:text="${orderLine.quantity}">Quantity</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <p>Sub Total: <span th:text="${'$' + order.subTotal}"></p>
+        <p>Payment Method: <span th:text="${order.payment.payment}"></p>
+        <p><a class="btn btn-primary" th:href="@{/buyer/order/{id}/downloadPDF(id=${order.id})}" target="_blank">Download PDF Document</a></p>
+    </div>
+</div>
+</body>
+</html>
+

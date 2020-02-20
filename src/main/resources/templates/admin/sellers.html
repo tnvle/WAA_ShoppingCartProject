@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layouts/admin/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Approve Sellers</title>
+
+</head>
+<body>
+
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+
+<h2>Seller List</h2>
+<table class="table table-hover">
+    <tr>
+        <th>Username</th>
+        <th>Is Active</th>
+        <th>Address</th>
+        <th></th>
+    </tr>
+    <tr th:each="user: ${users}">
+        <td id="username" th:text="${user.username}"></td>
+        <td id="active" th:text="${user.active}"></td>
+        <td id="address" th:text="${user.address}"></td>
+        <td th:if="${user.active}"><a th:href="@{/admin/sellers/seller-details/{id}(id=${user.id})}" class="btn btn-success" >Approved</a></td>
+        <td th:unless="${user.active}"><a th:href="@{/admin/sellers/seller-details/{id}(id=${user.id})}" class="btn btn-warning">Not Approved</a></td>
+    </tr>
+</table>
+<div id="result" style="display:none" >
+    <p id="success" ></p>
+    <p id="errors" ></p>
+</div>
+
+    </div>
+</div>
+</body>
+</html>

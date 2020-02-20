@@ -1,0 +1,43 @@
+.fieldError{
+    color:red;
+
+}
+.qty-text {
+    padding-left: 10px;
+}
+.remove-from-cart {
+    padding: 10px;
+}
+
+a.btn:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+a.btn {
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+}
+
+.review-body {
+    background-color: #fffef6;
+    border: 1px solid #c5c5c5;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 4px;
+}
+.adsBox {
+    margin-left: 100px;
+    margin-top: -100px;
+}
+.follow-seller{
+    color: red;
+}
+
+.checkout_details_area form textarea.form-control{
+    height: 100px;
+}

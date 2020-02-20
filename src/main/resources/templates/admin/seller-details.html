@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layouts/admin/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Details page</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+
+        <h2>Seller Details</h2>
+        <p>First Name: <span th:text="${seller.firstName}" th:remove="tag"></span></p>
+        <p>Last Name: <span th:text="${seller.lastName}" th:remove="tag"></span></p>
+        <p>User Name: <span th:text="${seller.username}" th:remove="tag"></span></p>
+        <p>Email: <span th:text="${seller.email}" th:remove="tag"></span></p>
+        <p>Active: <span th:if="${seller.active}" class="btn btn-outline-success" disabled>YES</span>
+            <span th:unless="${seller.active}" class="btn btn-outline-warning">NO</span>
+        </p>
+        <p>
+            Address Info: <span th:text="${seller.address}" th:remove="tag"></span>
+        </p>
+
+        <form th:action="@{/admin/sellers/seller-details/{id}(id=${seller.id})}" method="post" th:object="${seller}">
+            <input th:if="!${seller.active}" type="submit" value="Approve Now" class="btn btn-primary">
+        </form>
+    </div>
+</div>
+</body>
+</html>

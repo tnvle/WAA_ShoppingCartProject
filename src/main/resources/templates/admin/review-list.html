@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layouts/admin/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>Product Reviews</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>User</th>
+                <th>Rate</th>
+                <th>Message</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review: ${productReviews}">
+                <td><img th:src="@{/img/product-img/{img} (img=${review.product.images[0].name})}" width="100"/> <a
+                        th:href="@{/product-details/{pid} (pid=${review.product.id})}" th:text="${review.product.name}"
+                        target="_blank"></a></td>
+                <td th:text="${review.user.firstName + ' ' + review.user.lastName}">User</td>
+                <td th:text="${review.review.rating}">Rating</td>
+                <td th:text="${review.review.message}">Product</td>
+                <td style="text-align: center;vertical-align: middle;">
+                    <button th:if="${review.review.show == true}" class="btn btn-success" disabled>Approved</button>
+                    <button th:if="${review.review.show == false}" class="btn btn-warning" th:id="${review.review.id}"
+                            onclick="document.getElementById('reviewId').value = this.id" data-toggle="modal"
+                            data-target="#reviewModelConfirmation">Not Approved
+                    </button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="reviewId" value=""/>
+        <input type="hidden" id="csrf" th:value="${#response.getHeader('X-CSRF-TOKEN')}"/>
+
+        <div class="modal fade" id="reviewModelConfirmation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Reviews</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to approve this review?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnApproveReview">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

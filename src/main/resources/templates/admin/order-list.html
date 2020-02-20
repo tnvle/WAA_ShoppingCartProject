@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layouts/admin/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>List of Orders</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Product</th>
+                <th>User</th>
+                <th>Phone</th>
+                <th>Payment</th>
+                <th>Comment</th>
+                <th>Sub Total</th>
+                <th>Points</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order: ${productOrders}">
+                <td th:text="${order.id}">ID</td>
+
+<!--                <td><img th:src="@{/img/product-img/{img} (img=${review.product.images[0].name})}" width="100"/> <a-->
+<!--                        th:href="@{/product-details/{pid} (pid=${review.product.id})}" th:text="${review.product.name}"-->
+<!--                        target="_blank"></a></td>-->
+                <td th:text="${order.date}">Date</td>
+                <td th:text="${order.product}"></td>
+
+
+                <td th:text="${order.user.firstName + ' ' + order.user.lastName}">User</td>
+                <td th:text="${order.phone}">Phone</td>
+                <td th:text="${order.payment}">Payment</td>
+                <td th:text="${order.comment}">Comment</td>
+                <td th:text="${order.subTotal}">subTotal</td>
+
+                <td th:text="${order.points}" th:id="${'point_' + order.id}">Points</td>
+                <td style="text-align: center;vertical-align: middle;">
+                    <button th:if="${order.status == 'Successful'}"  th:text="${order.status}" th:id="${order.id}" class="btn btn-success"  data-toggle="modal"
+                            onclick="document.getElementById('orderId').value = this.id" data-target="#orderList">Status</button>
+
+                    <button th:unless="${order.status == 'Successful'}" th:text="${order.status}" th:id="${order.id}" class="btn btn-warning"  data-toggle="modal"
+                            onclick="document.getElementById('orderId').value = this.id" data-target="#orderList">Status</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="orderId" value=""/>
+        <input type="hidden" id="csrf" th:value="${#response.getHeader('X-CSRF-TOKEN')}"/>
+
+        <div class="modal fade" id="orderList" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Order Status</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <label>Update Order status</label><br/>
+                        <select id="statusSelect">
+                            <option value="" selected>Select a status</option>
+                            <option th:each="status : ${orderStatuses}" th:value="${status}" th:text="${status}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdateStatus">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

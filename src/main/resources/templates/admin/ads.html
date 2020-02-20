@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layouts/admin/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>Advertisement Management</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th></th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ads: ${adses}">
+                <td th:text="${ads.id}">ID</td>
+                <td><img th:src="@{/img/core-img/ads-img/{img} (img=${ads.image.name})}" width="100"/> </td>
+                <td th:text="${ads.title}">Title</td>
+                <td th:text="${ads.description}">Description</td>
+
+                <td style="text-align: center;vertical-align: middle;">
+                    <button th:if="${ads.show == true}" class="btn btn-success" disabled>Showed</button>
+                    <button th:if="${ads.show == false}" class="btn btn-warning" th:id="${ads.id}"
+                            onclick="document.getElementById('adsId').value = this.id" data-toggle="modal"
+                            data-target="#adsModelConfirmation">Not Showed
+                    </button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br/><br/><br/>
+
+        <h3>Add a new advertisement</h3>
+        <form id="adsForm" action="#" th:action="@{/admin/ads/save/(_csrf=${_csrf.token})}" th:object="${ads}"
+              method="post" enctype="multipart/form-data">
+            <p>Name <input name="title" th:field="*{title}" id="name"></p>
+            <p>Description <textarea name="description" th:field="*{description}" id="description" rows="4" cols="50"></textarea></p>
+            <p>
+                <label for="fileImages">Images </label>
+                <input id="fileImages" type="file" name="fileImages" multiple="multiple" th:field="*{fileImage}"/>
+            </p>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <p>
+                <input type="submit" value="Add a new advertisement" id="productBtn" class="btn btn-primary">
+            </p>
+        </form>
+
+        <input type="hidden" id="adsId" value=""/>
+        <input type="hidden" id="csrf" th:value="${#response.getHeader('X-CSRF-TOKEN')}"/>
+
+        <div class="modal fade" id="adsModelConfirmation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Advertisement</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Other advertisement will be automatically disabled. Do you want to approve to show this advertisement?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btnApproveShowAds">Approve To Show</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>

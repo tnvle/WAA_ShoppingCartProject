@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/general/layout}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+</head>
+<body>
+
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>User Details</h2>
+        <p>First Name: <span th:text="${savedUser.firstName}" th:remove="tag"></span></p>
+        <p>Last Name: <span th:text="${savedUser.lastName}" th:remove="tag"></span></p>
+        <p>User Name: <span th:text="${savedUser.username}" th:remove="tag"></span></p>
+        <p>Email: <span th:text="${savedUser.email}" th:remove="tag"></span></p>
+        <p>Active: <span th:if="${savedUser.active}" class="btn btn-outline-success" disabled>YES</span>
+            <span th:unless="${savedUser.active}" class="btn btn-outline-warning">NO</span>
+        </p>
+        <p>Roles:
+        <ul>
+            <li th:each="role: ${savedUser.roles}" th:text="${role.role}"></li>
+        </ul>
+        </p>
+        <p>
+            Address Info: <span th:text="${savedUser.address}"></span>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

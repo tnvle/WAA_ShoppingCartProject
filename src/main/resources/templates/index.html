@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/general/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Waa3L Store | Home</title>
+</head>
+
+<body>
+
+<div layout:fragment="main-content">
+    <div class="amado-pro-catagory clearfix">
+
+        <div th:each="prod : ${products}" class="single-products-catagory clearfix">
+            <a th:href="@{/product-details/{pid} (pid=${prod.id})}">
+                <img th:src="@{img/product-img/{imageName} (imageName = ${prod.images[0].name})}" > <!--img/bg-img/1.jpg -->
+                <!-- Hover Content -->
+                <div class="hover-content">
+                    <div class="line"></div>
+                    <p>From $<span th:text="${prod.price}"/></p>
+                    <h4 th:text="${prod.name}">Modern Chair</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

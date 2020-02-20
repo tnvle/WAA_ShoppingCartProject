@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layouts/seller/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Products</title>
+</head>
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+        <h2>Edit Product</h2>
+        <form id="productForm" action="#" th:action="@{/seller/products/edit/product-details(_csrf=${_csrf.token})}"
+              th:object="${oldProduct}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:field="*{id}"/>
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <p>Name: <input name="name" th:field="*{name}" id="name"></p>
+            <!--    <p>Brand: <input name="brand" th:field="*{brand}" id="brand"></p>-->
+            <p>Brand:<br/>
+                <select id="brand" th:field="*{brand.id}" multiple="false">
+                    <option th:each="b: ${brands}" th:value="${b.id}" th:text="${b.name}"></option>
+                </select></p><br/><br/>
+            <p>Category:<br/>
+                <select id="category" th:field="*{category.id}" multiple="false">
+                    <option th:each="cate: ${categories}" th:value="${cate.id}" th:text="${cate.name}"></option>
+                </select></p><br/><br/>
+            <p>Price: <input name="price" th:field="*{price}" id="price"></p>
+            <p>Description:<br/> <textarea name="description" th:field="*{description}" id="description" rows="4" cols="50"></textarea></p>
+            <p>
+                <label for="fileImages">Product Images: </label>
+                <input id="fileImages" type="file" name="fileImages" multiple="multiple" th:field="*{fileImages}"/>
+            </p>
+            <p>
+                <input type="reset" id="reset" class="btn btn-secondary"/>
+                <input type="submit" value="Add Product" id="productBtn" class="btn btn-primary"/>
+            </p>
+        </form>
+    </div>
+</div>
+</body>
+</html>

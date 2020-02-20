@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+
+</head>
+<body>
+<header class="header-area clearfix" th:fragment="header">
+    <div class="nav-close">
+        <i class="fa fa-close" aria-hidden="true"></i>
+    </div>
+    <div class="logo">
+        <a href="/"><img src="/img/core-img/logo.png" alt=""></a>
+    </div>
+
+    <!-- Cart Menu -->
+    <div class="cart-fav-search">
+        <a th:if="${userRole == 'ROLE_ADMIN'}" th:href="@{/admin}" class="cart-nav"> <img src="/img/core-img/user.png" alt=""/> ADMIN</a>
+        <a th:if="${userRole == 'ROLE_SELLER'}" th:href="@{/seller}" class="cart-nav"><img src="/img/core-img/user.png" alt=""/> SELLER</a>
+
+        <a th:if="${isAuthenticated == false}" href="/addUser" class="cart-nav"><img src="/img/core-img/user.png" alt=""> Register</a>
+        <a th:if="${isAuthenticated == false}" href="/login" class="cart-nav"><img src="/img/core-img/login.png" alt=""> Login</a>
+
+        <a th:if="${isAuthenticated == true}" th:href="@{/buyer}" class="cart-nav"><img src="/img/core-img/user.png" alt=""/> MY ACCOUNT</a>
+        <a th:if="${isAuthenticated == true && userRole == 'ROLE_BUYER'}" th:href="@{/buyer/orders}" class="cart-nav"><img src="/img/core-img/user.png" alt=""/> Order List</a>
+        <a th:if="${isAuthenticated == true}" href="/logout" class="cart-nav"><img src="/img/core-img/login.png" alt=""> Logout</a>
+
+        <a href="/cart" class="cart-nav"><img src="/img/core-img/cart.png" alt=""> Cart <span id="cartItemsNum" th:text="'(' + ${shoppingCart.cartItems.size()} + ')'" >(0)</span></a>
+        <a href="#" class="search-nav"><img src="/img/core-img/search.png" alt=""> Search</a>
+    </div>
+    <nav class="amado-nav">
+        <ul>
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/buyer/checkout">Checkout</a></li>
+        </ul>
+    </nav>
+    <div class="amado-btn-group mt-30 mb-100">
+        <a href="#" class="btn amado-btn mb-15" th:text="${ads.title}"></a>
+    </div>
+
+</header>
+</body>
+</html>

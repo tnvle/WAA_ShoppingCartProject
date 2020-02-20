@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/general/layout}"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Product Details</title>
+</head>
+
+<body>
+<div class="single-product-area section-padding-100 clearfix" layout:fragment="main-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-50">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" th:text="${product.brand.name}">Furniture</a></li>
+                        <li class="breadcrumb-item"><a href="#" th:text="${product.category.name}">Chairs</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">white modern
+                            chair
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="single_product_thumb">
+                    <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li th:each="cImg, iStat : ${product.images}" th:classappend="${iStat.index == 0} ? active : ''" data-target="#product_details_slider"
+                                data-slide-to="0" th:attr="data-slide-to=${iStat.index}"
+                                th:style="'background-image: url(/img/product-img/'+${cImg.name}+');'">
+                            </li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item" th:each="img, status : ${product.images}" th:classappend="${status.index == 0} ? active : ''">
+                                <a class="gallery_img" th:href="@{/img/product-img/{image} (image=${img.name})}">
+                                    <img class="d-block w-100"
+                                         th:src="@{/img/product-img/{imageName} (imageName = ${img.name})}" alt="slide">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="single_product_desc">
+                    <!-- Product Meta Data -->
+                    <div class="product-meta-data">
+                        <div class="line"></div>
+                        <p class="product-price"
+                           th:text="'$' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">$180</p>
+                        <a href="product-details.html">
+                            <h6 th:text="${product.name}">White Modern Chair</h6>
+                        </a>
+                        <!-- Ratings & Review -->
+                        <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
+                            <div class="ratings">
+                                <i th:if="${product.reviews.size() > 0}" class="fa fa-star" aria-hidden="true"
+                                   th:each="i: ${#numbers.sequence(0, product.getAverageRating() - 1)}"  ></i>
+<!--                                <span th:text="${product.getAverageRating()}"></span>-->
+                            </div>
+                        </div>
+                        <!-- Avaiable -->
+                        <p class="avaibility"><i class="fa fa-circle"></i> <span
+                                th:text="${product.status}? #{true} : #{false}">In Stock</span></p>
+                        <p>
+                            Seller: <span th:text="${product.user.firstName} + ' ' + ${product.user.lastName}"></span>
+                            <a href="#" id="followSeller" th:attr="seller-id=${product.user.id}, mode='follow'" th:if="${isAuthenticated == true && !product.user.checkFollower(currentUser)}" ><i
+                                    class="fa fa-heart " aria-hidden="true"></i>Follow</a>
+                            <a href="#" id="unfollowSeller" th:attr="seller-id=${product.user.id}, mode='unfollow'" th:if="${isAuthenticated == true && product.user.checkFollower(currentUser)}" ><i
+                                    class="fa fa-heart follow-seller" aria-hidden="true"></i>Unfollow</a>
+                        </p>
+                    </div>
+
+                    <div class="short_overview my-5">
+                        <p th:text="${product.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Aliquid quae eveniet culpa officia
+                            quidem mollitia impedit iste asperiores nisi reprehenderit consequatur, autem, nostrum
+                            pariatur enim?</p>
+                    </div>
+
+                    <!-- Add to Cart Form -->
+                    <div sec:authorize="!hasRole('ROLE_SELLER')">
+                        <form class="cart clearfix" method="post">
+                            <div class="cart-btn d-flex mb-50">
+                                <p>Qty</p>
+                                <div class="quantity">
+                                <span class="qty-minus"
+                                      onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i
+                                        class="fa fa-caret-down" aria-hidden="true"></i></span>
+                                    <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" value="1"
+                                           name="quantity">
+                                    <span class="qty-plus"
+                                          onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i
+                                            class="fa fa-caret-up" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+
+                            <button type="submit" name="addtocart" value="5" th:data="${product.id}"
+                                    class="btn amado-btn add-to-cart-btn">Add to cart
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="review" sec:authorize="!hasRole('ROLE_SELLER')">
+                    <a href="#" id="reviewId">Write A Review</a>
+                    <input type="hidden" id="productId" th:value="${productId}"/>
+                    <input type="hidden" id="csrf" th:value="${#response.getHeader('X-CSRF-TOKEN')}"/>
+                </div>
+                <div class="review-body" th:each="review:${product.reviews}" th:if="${review.show}">
+                    <div class="ratings" >
+                        <i class="fa fa-star" aria-hidden="true"  th:each="i: ${#numbers.sequence(0, review.rating - 1)}"></i>
+<!--                        <span th:text="${review.rating}"></span>-->
+                    </div>
+                    <p th:text="${review.message}"></p>
+                    <span th:text="${review.user.firstName} + ' ' + ${review.user.lastName}"></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Product Review
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" id="modal-body-id">
+                    <form>
+                        <div class="form-group">
+                            <label for="rating" class="control-label">Rating:</label><br/>
+                            <select id="rating" name="rating">
+                                <option value="1">1 *</option>
+                                <option value="2">2 **</option>
+                                <option value="3">3 ***</option>
+                                <option value="4">4 ****</option>
+                                <option value="5">5 *****</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="clear: both;padding-top: 20px;">
+                            <label for="message" class="control-label">Message:</label>
+                            <textarea class="form-control" id="message" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnSubmitReview">Submit a review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
